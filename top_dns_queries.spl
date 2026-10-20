@@ -1,0 +1,4 @@
+index=botsv3 earliest=0 sourcetype=stream:dns
+| stats count AS Queries by query
+| sort - Queries
+| head 10

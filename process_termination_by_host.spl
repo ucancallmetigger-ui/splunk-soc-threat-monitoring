@@ -1,0 +1,3 @@
+index=botsv3 earliest=0 sourcetype=wineventlog:security EventCode=4689
+| stats count AS process_termination_events by host
+| sort - process_termination_events

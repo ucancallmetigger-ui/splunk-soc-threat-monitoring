@@ -1,0 +1,6 @@
+index=botsv3 earliest=0 sourcetype=aws:cloudwatchlogs:vpcflow
+| rex field=_raw "^\S+\s+\S+\s+\S+\s+(?<srcaddr>\S+)\s+(?<dstaddr>\S+)\s+(?<srcport>\d+)\s+(?<dstport>\d+)\s+(?<protocol>\d+)\s+(?<packets>\d+)\s+(?<bytes>\d+)\s+(?<start>\d+)\s+(?<end>\d+)\s+(?<action>\S+)\s+(?<log_status>\S+)"
+| where action="REJECT" AND dstport IN (22,23,445,11211)
+| stats count AS rejected_flows dc(dstport) AS unique_ports values(dstport) AS destination_ports by srcaddr
+| sort - rejected_flows
+| head 20

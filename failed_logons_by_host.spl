@@ -1,0 +1,3 @@
+index=botsv3 earliest=0 sourcetype=wineventlog:security EventCode=4625
+| stats count AS failed_logons by host
+| sort - failed_logons

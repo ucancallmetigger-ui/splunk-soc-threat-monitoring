@@ -1,0 +1,4 @@
+index=botsv3 earliest=0 sourcetype=wineventlog:security EventCode=4957
+| rex field=Message "Reason:\s+(?<reason>[^\r\n]+)"
+| stats count AS events by reason
+| sort - events

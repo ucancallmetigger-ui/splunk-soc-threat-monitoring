@@ -1,0 +1,6 @@
+index=botsv3 earliest=0 sourcetype=wineventlog:security EventCode=4670
+| rex field=Message "Object Type:\s+(?<object_type>[^\r\n]+)"
+| rex field=Message "Process Name:\s+(?<process_name>[^\r\n]+)"
+| stats count AS events by object_type process_name
+| sort - events
+| head 20

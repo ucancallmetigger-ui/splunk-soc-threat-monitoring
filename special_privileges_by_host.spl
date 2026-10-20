@@ -1,0 +1,3 @@
+index=botsv3 earliest=0 sourcetype=wineventlog:security EventCode=4672
+| stats count AS privileged_logon_events by host
+| sort - privileged_logon_events

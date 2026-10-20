@@ -1,0 +1,9 @@
+index=botsv3 earliest=0 sourcetype="wineventlog:microsoft-windows-powershell/operational" EventCode=4104
+| eval script=lower(Message)
+| eval has_logging_tampering=if(match(script,"enablescriptblocklogging"),1,0)
+| eval has_downloadstring=if(match(script,"downloadstring"),1,0)
+| eval has_base64_decode=if(match(script,"frombase64string"),1,0)
+| eval has_encoded_command=if(match(script,"encodedcommand"),1,0)
+| eval has_dynamic_execution=if(match(script,"invoke-expression|(^|[^a-z])iex([^a-z]|$)"),1,0)
+| eval has_hidden=if(match(script,"hidden"),1,0)
+| stats sum(has_logging_tampering) AS logging_tampering_events sum(has_downloadstring) AS remote_content_download_events sum(has_base64_decode) AS base64_decode_events sum(has_encoded_command) AS encoded_command_events sum(has_dynamic_execution) AS dynamic_execution_events sum(has_hidden) AS hidden_keyword_events

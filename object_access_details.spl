@@ -1,0 +1,6 @@
+index=botsv3 earliest=0 sourcetype=wineventlog:security EventCode=4663
+| rex field=Message "Object Name:\s+(?<object_name>[^\r\n]+)"
+| rex field=Message "Accesses:\s+(?<accesses>[^\r\n]+)"
+| stats count AS events values(accesses) AS access_types by host object_name
+| sort - events
+| head 20

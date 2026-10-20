@@ -1,0 +1,7 @@
+index=botsv3 earliest=0 sourcetype=aws:cloudwatchlogs:vpcflow
+| rex field=_raw "^\S+\s+\S+\s+\S+\s+(?<srcaddr>\S+)\s+(?<dstaddr>\S+)\s+(?<srcport>\d+)\s+(?<dstport>\d+)\s+(?<protocol>\d+)\s+(?<packets>\d+)\s+(?<bytes>\d+)\s+(?<start>\d+)\s+(?<end>\d+)\s+(?<action>\S+)\s+(?<log_status>\S+)"
+| where action="ACCEPT"
+| stats sum(bytes) AS total_bytes sum(packets) AS total_packets count AS flow_count by srcaddr dstaddr dstport protocol
+| where total_bytes > 1000000
+| sort - total_bytes
+| head 20

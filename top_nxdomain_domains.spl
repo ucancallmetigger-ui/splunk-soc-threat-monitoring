@@ -1,0 +1,6 @@
+index=botsv3 earliest=0 sourcetype=aws:cloudwatchlogs
+| rex field=_raw "\s(?<query_domain>\S+\.[A-Za-z]{2,})\s+(?<dns_type>A|AAAA)\s+(?<dns_response>NXDOMAIN|NOERROR)"
+| where dns_response="NXDOMAIN"
+| stats count AS nxdomain_count by query_domain
+| sort - nxdomain_count
+| head 10
